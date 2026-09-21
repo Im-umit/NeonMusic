@@ -22,3 +22,5 @@ Open this folder in Android Studio and let Gradle sync. Then run:
 or use Android Studio's Build > Make Project / Build APK.
 
 The execution environment used to prepare this archive did not have Android SDK/Gradle dependency access, so a remote Gradle compile could not be executed here. The project has therefore been repaired structurally and the source/configuration checked, but the final APK must be compiled in an Android Studio environment with Android SDK 34 and internet access for Gradle/Maven dependencies.
+
+CI force: Tue Sep 22 00:24:37 +03 2026
