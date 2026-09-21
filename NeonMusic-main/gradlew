@@ -1,0 +1,19 @@
+#!/bin/sh
+set -eu
+GRADLE_VERSION=8.7
+CACHE="${GRADLE_USER_HOME:-$HOME/.gradle}/wrapper/dists/neonmusic-gradle-$GRADLE_VERSION"
+DIST="$CACHE/gradle-$GRADLE_VERSION-bin.zip"
+DIR="$CACHE/gradle-$GRADLE_VERSION"
+if [ ! -x "$DIR/bin/gradle" ]; then
+  mkdir -p "$CACHE"
+  if [ ! -f "$DIST" ]; then
+    echo "Downloading Gradle $GRADLE_VERSION..."
+    if command -v curl >/dev/null 2>&1; then curl -fL "https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip" -o "$DIST"; elif command -v wget >/dev/null 2>&1; then wget -O "$DIST" "https://services.gradle.org/distributions/gradle-$GRADLE_VERSION-bin.zip"; else echo "curl or wget is required." >&2; exit 1; fi
+  fi
+  rm -rf "$DIR.tmp"
+  mkdir -p "$DIR.tmp"
+  if command -v unzip >/dev/null 2>&1; then unzip -q "$DIST" -d "$DIR.tmp"; else echo "unzip is required." >&2; exit 1; fi
+  mv "$DIR.tmp/gradle-$GRADLE_VERSION" "$DIR"
+  rmdir "$DIR.tmp" 2>/dev/null || true
+fi
+exec "$DIR/bin/gradle" "$@"
